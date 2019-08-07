@@ -1,0 +1,12 @@
+endpoints:
+  - route: /example1
+    example: |
+      '{'
+      '  "data": {'
+      '     "jradek": 123'
+      '   }'
+      '}'
+  - route: /example2
+    example: '{ "data": [1,2,3] }'
+  - route: /unimplemented
+
