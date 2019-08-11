@@ -1,14 +1,16 @@
-from flask import render_template, url_for
+from flask import render_template, url_for, Blueprint
 import json
 import pprint
 import pathlib
 import yaml
 
-from dummyapp import app_obj, API_PREFIX
+from dummyapp import API_PREFIX
+
+route_blueprint = Blueprint("route_blueprint", __name__)
 
 
 def load_api_documentation():
-    p = pathlib.Path(app_obj.root_path) / "static/yaml/rest_api.yaml"
+    p = pathlib.Path(route_blueprint.root_path) / "static/yaml/rest_api.yaml"
     with open(p, "r") as f:
         return yaml.safe_load(f)
 
@@ -24,12 +26,12 @@ def unquote_embedded_json(s: str) -> str:
 
     Returns: valid json string
     """
-    quote_chars = ['\'', "\""]
+    quote_chars = ["'", '"']
 
     def unquote(line):
         if line[0] in quote_chars:
             line = line[1:]
-        if line[len(line)-1] in quote_chars:
+        if line[len(line) - 1] in quote_chars:
             line = line[:-1]
         return line
 
@@ -46,7 +48,7 @@ def process():
     for endpoint in documentation["endpoints"]:
         m = {
             "route": f"{endpoint['route']}",
-            "endpoint": f"http://{HOST}:{PORT}/{API_PREFIX}{endpoint['route']}"
+            "endpoint": f"http://{HOST}:{PORT}/{API_PREFIX}{endpoint['route']}",
         }
 
         if "example" in endpoint:
@@ -67,12 +69,12 @@ def process():
     return methods
 
 
-@app_obj.route("/")
+@route_blueprint.route("/")
 def index():
     return render_template("index.html")
 
 
-@app_obj.route("/documentation")
+@route_blueprint.route("/documentation")
 def documentation():
     methods = process()
     # pprint.pprint(methods)

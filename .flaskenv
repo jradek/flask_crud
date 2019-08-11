@@ -1,2 +1,2 @@
 FLASK_DEBUG=True
-FLASK_APP="dummyapp:app_obj"
+FLASK_APP="dummyapp:create_app('development')"

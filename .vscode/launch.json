@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "dummyapp:app_obj",
+                "FLASK_APP": "dummyapp:create_app('development')",
             },
             "args": [
                 "run",
